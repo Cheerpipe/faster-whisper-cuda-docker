@@ -1,0 +1,20 @@
+services:
+  wyoming-whisper-cuda:
+    container_name: wyoming-whisper-cuda
+    build:
+      context: ./docker/cuda
+      dockerfile: Dockerfile    
+    command: --model medium-int8 --language en --beam-size 5
+    volumes:
+      - /path/to/your/data/directory:/data
+    restart: unless-stopped
+    ports:
+      - 10300:10300
+    runtime: nvidia
+    deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: 1
+                capabilities: [gpu]
